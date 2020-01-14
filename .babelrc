@@ -9,6 +9,12 @@
                 "libraryName": "antd"
                 // "style": "css" 有bug，不用此方式
             }
+        ],
+        [
+            "styled-components",
+            {
+                "ssr": true
+            }
         ]
     ]
 }

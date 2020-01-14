@@ -18,10 +18,11 @@ export default () => {
 
     return (
         <>
-            <Link href="/a?id=1" as="/a/1">
+            {/* <Link href="/a?id=1" as="/a/1">
                 <Button>jump A</Button>
             </Link>
-            <Button onClick={JumpB}>jump B</Button>
+            <Button onClick={JumpB}>jump B</Button> */}
+            <span>Index</span>
         </>
     )
 }
