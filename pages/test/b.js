@@ -1,3 +1,7 @@
 import Compontent from "../../components/component";
+import { withRouter } from "next/router";
 
-export default () => <Compontent>B</Compontent>
+const B = ({ router }) => <Compontent>B--{router.query.id}</Compontent>
+
+
+export default withRouter(B);

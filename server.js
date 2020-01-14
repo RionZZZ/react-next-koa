@@ -8,7 +8,7 @@ const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
     const server = new Koa();
-    // const router = new Router();
+    const router = new Router();
 
     // router.get("/test/:id", (ctx) => {
     //     // ctx.body = `<p>request /test ${ctx.params.id}</p>`;
@@ -21,10 +21,19 @@ app.prepare().then(() => {
     //     await next();
     // })
 
-    // server.use(router.routes());
+    router.get('/a/:id', async (ctx) => {
+        const { id } = ctx.params;
+        await handle(ctx.req, ctx.res, {
+            pathname: '/a',
+            query: { id }
+        })
+        ctx.respond = false
+    })
+
+    server.use(router.routes());
 
     server.use(async (ctx, next) => {
-        // req,res为node的http模块下的
+        // req,res为node/http模块下的
         await handle(ctx.req, ctx.res);
         ctx.respond = false;
     })

@@ -13,15 +13,32 @@ export default () => {
             query: {
                 id: 2
             }
-        });
+        }, "/test/b/2");
     }
 
     return (
         <>
-            <Link href="/a?id=1">
-                <Button>Index</Button>
+            <Link href="/a?id=1" as="/a/1">
+                <Button>jump A</Button>
             </Link>
             <Button onClick={JumpB}>jump B</Button>
         </>
     )
 }
+
+const events = ["routeChangeStart", "routeChangeComplete", "routeChangeError", "beforeHistoryChange", "hashChangeStart", "hashChangeComplete"]
+
+const makeEvents = type => {
+    return (...args) => {
+        console.log(type, ...args)
+    }
+}
+
+events.forEach(event => {
+    Router.events.on(event, makeEvents(event));
+})
+
+
+
+
+
