@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useLayoutEffect, useContext } from "react";
 import Component from "../../components/component";
+
+import MyContext from "../../lib/my-context";
 
 class B extends React.Component {
     state = {
@@ -32,16 +34,41 @@ function BFunc() {
 
     const [count, dispatchCount] = useReducer(BReducer, 0); // 复杂变量使用reducer（对象）
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            // setCount(25);
-            // setCount(c => ++c);
-            dispatchCount({ type: "add" });
-        }, 1000)
-        return () => clearInterval(timer);
-    }, [])
+    const context = useContext(MyContext);
 
-    return <span>{count}</span>
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         // setCount(25);
+    //         // setCount(c => ++c);
+    //         dispatchCount({ type: "add" });
+    //     }, 1000)
+    //     return () => clearInterval(timer);
+    // }, [])
+
+    useEffect(() => {
+        console.log("effect invoke");
+        return () => {
+            console.log("effect detect");
+        }
+    }, [name])
+
+    // 比effect先执行，在dom挂载到html上去之前执行。 会卡，少用..
+    useLayoutEffect(() => {
+        console.log("useLayoutEffect invoke");
+        return () => {
+            console.log("useLayoutEffect detect");
+        }
+    }, [name])
+
+    return (
+        <div>
+            <span>{count}</span>
+            <span>{name}</span>
+            <input value={name} onChange={e => setName(e.target.value)} />
+            <button onClick={() => dispatchCount({ type: "add" })}>{count}</button>
+            <p>{context}</p>
+        </div>
+    )
 }
 
 function BReducer(state, action) {

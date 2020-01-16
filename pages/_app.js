@@ -2,7 +2,8 @@ import App, { Container } from "next/app";
 
 import "antd/dist/antd.css";
 
-import Layout from "../components/layout"
+import Layout from "../components/layout";
+import MyContext from "../lib/my-context";
 
 class MyApp extends App {
 
@@ -23,7 +24,9 @@ class MyApp extends App {
             // <Container> next9已不用再使用Container
             <>
                 <Layout>
-                    <Component {...pageProps}></Component>
+                    <MyContext.Provider value="context-test">
+                        <Component {...pageProps}></Component>
+                    </MyContext.Provider>
                 </Layout>
             </>
             // </Container>
