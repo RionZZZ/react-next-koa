@@ -12,7 +12,6 @@ function BFunc() {
     const handleButtonClick = useCallback(() => dispatchCount({ type: "add" }), [count]);
     // const handleButtonClick = useMemo(() => () => dispatchCount({ type: "add" }), []);
 
-
     const countRef = useRef(); // {current:''} useRef每次返回同一个对象，不会创建新对象
     countRef.current = count;
     const handleAlert = () => {
