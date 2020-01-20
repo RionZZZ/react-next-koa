@@ -5,7 +5,7 @@ import { Button } from "antd";
 import Link from "next/link";
 import Router from "next/router";
 
-import store from "../store/store"
+import store, { add } from "../store/store"
 
 import { connect } from "react-redux";
 
@@ -48,6 +48,11 @@ const makeEvents = type => {
 events.forEach(event => {
     Router.events.on(event, makeEvents(event));
 })
+
+Index.getInitialProps = async ({ reduxStore }) => {
+    reduxStore.dispatch(add(33));
+    return {};
+}
 
 export default connect(function mapStateToProps(state) {
     return {
