@@ -3,9 +3,15 @@ const Router = require("koa-router");
 const next = require("next");
 const session = require("koa-session");
 
+const Redis = require("ioredis");
+const RedisSessionStore = require("./server/session-store");
+const redis = new Redis(); // 创建redis client
+
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+let index = 0;
 
 app.prepare().then(() => {
     const server = new Koa();
@@ -22,10 +28,11 @@ app.prepare().then(() => {
     //     await next();
     // })
 
-    server.keys = ["zzz github app"];
+    server.keys = ["zzz github app"]; // 给cookie加密
     const SESSION_CONFIG = {
         key: "zid",
-        // store: {}
+        // maxAge: 10 * 1000,
+        store: new RedisSessionStore(redis)
     }
 
     server.use(session(SESSION_CONFIG, server));
@@ -67,13 +74,20 @@ app.prepare().then(() => {
 
         ctx.body = "set session success";
     })
+    router.get('/delete/user', async (ctx) => {
+        ctx.session = null;
+        ctx.body = "delete session success";
+    })
 
     server.use(router.routes());
 
     server.use(async (ctx, next) => {
         // req,res为node/http模块下的
 
-        // ctx.cookies.set("id", "userId: XXX");
+        ctx.cookies.set("id", "uid:xx", {
+            httpOnly: false
+        });
+        // index++;
 
         await handle(ctx.req, ctx.res);
         ctx.respond = false;

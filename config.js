@@ -1,8 +1,8 @@
 module.exports = {
     github: {
         client_id: "Iv1.45b0ebdc3cd6cc6f",
-        client_secret: "c2c8f0f44ed7ddbc15116b255a85b78371c1f4b7"
+        client_secret: "20410941e1266a74dfc26e22234415628843c131"
     }
 }
 
-// token: 95acbc13d739ddd8a70326248494c69f041a6cd7
+// token: a4f788065d886ce28f8bcf78520c7e378da7cf87
