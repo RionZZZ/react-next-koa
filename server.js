@@ -1,6 +1,7 @@
 const Koa = require("koa");
 const Router = require("koa-router");
 const next = require("next");
+const session = require("koa-session");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -21,19 +22,59 @@ app.prepare().then(() => {
     //     await next();
     // })
 
+    server.keys = ["zzz github app"];
+    const SESSION_CONFIG = {
+        key: "zid",
+        // store: {}
+    }
+
+    server.use(session(SESSION_CONFIG, server));
+
+    server.use(async (ctx, next) => {
+        // console.log(ctx.cookies.get("id"));
+
+        // ctx.session = ctx.session || {};
+        // ctx.session.user = {
+        //     username: "rion",
+        //     age: 25
+        // }
+
+        // if (!ctx.session.user) {  // 不能这样写，会报错，原因koa-session会在页面加载完成后set cookie。
+        //     ctx.session.user = {
+        //         name: "zya",
+        //         age: 25
+        //     }
+        // } else {
+        console.log("session:::", ctx.session)
+        // }
+
+        await next();
+    })
+
     router.get('/a/:id', async (ctx) => {
         const { id } = ctx.params;
         await handle(ctx.req, ctx.res, {
             pathname: '/a',
             query: { id }
         })
-        ctx.respond = false
+        ctx.respond = false;
+    })
+    router.get('/set/user', async (ctx) => {
+        ctx.session.user = {
+            name: "zya",
+            age: 25
+        }
+
+        ctx.body = "set session success";
     })
 
     server.use(router.routes());
 
     server.use(async (ctx, next) => {
         // req,res为node/http模块下的
+
+        // ctx.cookies.set("id", "userId: XXX");
+
         await handle(ctx.req, ctx.res);
         ctx.respond = false;
     })
