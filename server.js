@@ -31,7 +31,7 @@ app.prepare().then(() => {
     server.keys = ["zzz github app"]; // 给cookie加密
     const SESSION_CONFIG = {
         key: "zid",
-        // maxAge: 10 * 1000,
+        // maxAge: 15 * 1000,
         store: new RedisSessionStore(redis)
     }
 
@@ -50,11 +50,12 @@ app.prepare().then(() => {
         //     ctx.session.user = {
         //         name: "zya",
         //         age: 25
-        //     }
+        //     } // 写在router ‘/set/user’ 中
         // } else {
-        console.log("session:::", ctx.session)
+        // console.log("session:::", ctx.session)
         // }
 
+        // console.log("session:::", ctx.session)
         await next();
     })
 
@@ -69,7 +70,7 @@ app.prepare().then(() => {
     router.get('/set/user', async (ctx) => {
         ctx.session.user = {
             name: "zya",
-            age: 25
+            age: 20
         }
 
         ctx.body = "set session success";

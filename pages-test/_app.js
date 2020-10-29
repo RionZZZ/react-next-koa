@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import store from "../store/store";
 
 import Layout from "../components/layout";
+import MyContext from "../lib/my-context";
 
 import testHOC from "../lib/with-redux";
 
@@ -32,7 +33,9 @@ class MyApp extends App {
                 <Layout>
                     {/* <Provider store={store}> */}
                     <Provider store={reduxStore}>
+                        <MyContext.Provider value="context-test">
                             <Component {...pageProps}></Component>
+                        </MyContext.Provider>
                     </Provider>
                 </Layout>
             </>
