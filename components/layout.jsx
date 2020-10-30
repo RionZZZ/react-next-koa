@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { Button, Layout, Icon, Input, Avatar } from "antd";
 import { useState, useCallback } from 'react';
+import Container from './Container';
 
 const { Header, Content, Footer } = Layout;
+
+
+const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{children}</div>
 
 export default ({ children }) => {
 
@@ -16,7 +20,7 @@ export default ({ children }) => {
     return (
         <Layout>
             <Header>
-                <div className="header-inner">
+                <Container renderer={<div className="header-inner" />}>
                     <div className="header-left">
                         <div className="log">
                             <Icon type="github" style={github} />
@@ -30,9 +34,16 @@ export default ({ children }) => {
                             <Avatar size={40} icon="user" />
                         </div>
                     </div>
-                </div>
+                </Container>
             </Header>
-            <Content style={content}>{children}</Content>
+            <Content style={content}>
+                {/* <Container comp="div">
+                    {children}
+                </Container> */}
+                <Container renderer={<Comp color="#f00" style={{ fontSize: 38 }} />}>
+                    {children}
+                </Container>
+            </Content>
             <Footer style={footer}>
                 Develop by Rion @ <a href="mailto:rion.z924@gmail.com">rion@gmail</a>
             </Footer>
@@ -52,6 +63,9 @@ export default ({ children }) => {
                 }
                 .ant-layout{
                     height: 100%;
+                }
+                .ant-layout-header{
+                    padding: 0;
                 }
             `}</style>
         </Layout>
