@@ -2,6 +2,7 @@ const Koa = require("koa");
 const Router = require("koa-router");
 const next = require("next");
 const session = require("koa-session");
+const auth = require("./server/auth");
 
 const Redis = require("ioredis");
 const RedisSessionStore = require("./server/session-store");
@@ -36,6 +37,13 @@ app.prepare().then(() => {
     }
 
     server.use(session(SESSION_CONFIG, server));
+
+
+    // github OAuth
+    auth(server);
+
+
+
 
     server.use(async (ctx, next) => {
         // console.log(ctx.cookies.get("id"));
@@ -79,6 +87,19 @@ app.prepare().then(() => {
         ctx.session = null;
         ctx.body = "delete session success";
     })
+
+
+    router.get('/api/user/info', async (ctx) => {
+        const user = ctx.session.userInfo;
+        if (!user) {
+            ctx.status = 401;
+            ctx.body = "need login";
+        } else {
+            ctx.body = user;
+            ctx.set('Content-Type', 'application/json');
+        }
+    })
+
 
     server.use(router.routes());
 
