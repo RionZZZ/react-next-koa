@@ -10,6 +10,8 @@ const userInitialState = {
     age: 25
 }
 
+const userInfoState = {}
+
 const ADD = "ADD";
 function countReducer(state = initialState, action) {
     console.log(state, action);
@@ -36,10 +38,19 @@ function userReducer(state = userInitialState, action) {
     }
 }
 
+
+function userInfoReducer(state = userInfoState, action) {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
 // const store = createStore(countReducer, initialState);
 const allReducers = combineReducers({
     counter: countReducer,
-    user: userReducer
+    user: userReducer,
+    userInfo: userInfoReducer
 })
 // const store = createStore(
 //     allReducers,
@@ -91,7 +102,8 @@ export default function initialStore(state) {
         // },
         Object.assign({}, {
             counter: initialState,
-            user: userInitialState
+            user: userInitialState,
+            userInfo: userInfoState
         }, state),
         composeWithDevTools(applyMiddleware(ReduxThunk))
     );
