@@ -10,7 +10,10 @@ const userInitialState = {
     age: 25
 }
 
-const userInfoState = {}
+const userInfoState = {
+    name: "111",
+    aaa: "123"
+}
 
 const ADD = "ADD";
 function countReducer(state = initialState, action) {
@@ -93,7 +96,9 @@ function addAsync(num) {
 
 // export default store;
 
-export default function initialStore(state) {
+export default function initialStore(state = {}) {
+    console.log("state");
+    console.log(state);
     const store = createStore(
         allReducers,
         // {

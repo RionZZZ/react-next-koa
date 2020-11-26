@@ -25,16 +25,17 @@ class MyApp extends App {
 
     render() {
         const { Component, pageProps, reduxStore } = this.props;
+        console.log("reduxStore", reduxStore.getState())
 
         return (
             // <Container> next9已不用再使用Container
             <>
-                <Layout>
-                    {/* <Provider store={store}> */}
-                    <Provider store={reduxStore}>
-                            <Component {...pageProps}></Component>
-                    </Provider>
-                </Layout>
+                {/* <Provider store={store}> */}
+                <Provider store={reduxStore}>
+                    <Layout>
+                        <Component {...pageProps}></Component>
+                    </Layout>
+                </Provider>
             </>
             // </Container>
         )

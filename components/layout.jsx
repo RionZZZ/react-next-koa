@@ -1,14 +1,26 @@
 import Link from "next/link";
-import { Button, Layout, Icon, Input, Avatar } from "antd";
+import { Button, Layout, Icon, Input, Avatar, Tooltip, Dropdown, Menu } from "antd";
 import { useState, useCallback } from 'react';
 import Container from './Container';
+import { connect } from 'react-redux';
+
 
 const { Header, Content, Footer } = Layout;
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{children}</div>
 
-export default ({ children }) => {
+const userDropdown = (
+    <Menu>
+        <Menu.Item>
+            <span>login out</span>
+        </Menu.Item>
+    </Menu>
+)
+
+function LayoutComp({ children, user }) {
 
     const [search, setSearch] = useState('');
     const searchChange = useCallback((event) => {
@@ -31,7 +43,20 @@ export default ({ children }) => {
                     </div>
                     <div className="header-right">
                         <div className="user">
-                            <Avatar size={40} icon="user" />
+                            {
+                                user && user.id ? (
+                                    <Dropdown overlay={userDropdown}>
+                                        <a href="/">
+                                            <Avatar size={40} src={user.avatar_url} />
+                                        </a>
+                                    </Dropdown>
+                                ) : (
+                                        <Tooltip placement="bottom" title="click to login">
+                                            <a href={publicRuntimeConfig.OAUTH_URL}>
+                                                <Avatar size={40} icon="user" />
+                                            </a>
+                                        </Tooltip>
+                                    )}
                         </div>
                     </div>
                 </Container>
@@ -68,9 +93,16 @@ export default ({ children }) => {
                     padding: 0;
                 }
             `}</style>
-        </Layout>
+        </Layout >
     )
 }
+
+export default connect(function mapState(state) {
+    return {
+        user: state.userInfo,
+    }
+}
+)(LayoutComp);
 
 const github = {
     color: '#fff',
@@ -87,3 +119,4 @@ const content = {
     display: 'flex',
     flex: 1
 }
+
